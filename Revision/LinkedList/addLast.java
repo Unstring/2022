@@ -35,6 +35,18 @@ public class addLast {
             }
             System.out.println();
         }
+
+        public void removeFirst(){
+            if(size == 0){
+                System.out.println("List is emplty");
+            }else if(size == 1){
+                head = tail = null;
+                size = 0;
+            }else{
+                head = head.next;
+                size--;
+            }
+        }
     }
     public static void testList(LinkedList list){
         for(Node temp = list.head; temp != null; temp = temp.next){
