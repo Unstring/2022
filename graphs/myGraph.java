@@ -1,8 +1,12 @@
 import java.util.*;
 
 public class myGraph{
-    static class Edge{
-        int src; int nbr; int wt;
+
+    public static class Edge{
+        int src;
+        int nbr; 
+        int wt;
+
         Edge(int src, int nbr, int wt){
             this.src = src;
             this.nbr = nbr;
@@ -10,5 +14,12 @@ public class myGraph{
         }
     }
 
-    
+    public static ArrayList<Edge> graph;
+
+    public static void fun(){
+        
+    }
+    public static void main(String[] args){
+        fun();
+    }
 }
