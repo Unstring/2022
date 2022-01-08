@@ -5,7 +5,7 @@ public class myGraph{
     public static class Edge{
         int src;
         int nbr; 
-        int wt;
+        int wt;    
 
         Edge(int src, int nbr, int wt){
             this.src = src;
