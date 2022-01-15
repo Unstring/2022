@@ -2,6 +2,7 @@
     let btnAddFolder = document.querySelector("#addFolder");
     let btnAddTextFile = document.querySelector("#addTextFile");
     let divbreadcrumb = document.querySelector("#breadcrumb");
+    let aRootPath = divbreadcrumb.querySelector("a[purpose='path']");
     let divContainer = document.querySelector("#container");
     let templates = document.querySelector("#templates");
     let resources = [];
@@ -10,11 +11,14 @@
 
     btnAddFolder.addEventListener("click", addFolder);
     btnAddTextFile.addEventListener("click", addTextFile);
+    aRootPath.addEventListener("click", viewFolderFromPath);
 
     // validation - unique, non-blank
     function addFolder(){
         let rname = prompt("Enter folder's name");
-        rname = rname.trim();
+        if(rname != null){
+            rname = rname.trim();
+        }
 
         if(!rname){ // empty name validation
             alert("Empty name is not allowed.");
@@ -46,45 +50,47 @@
     }
 
     function deleteFolder(){
-        console.log("In delete");
+        
     }
 
     function deleteTextFile(){
 
     }
 
+    // empty, old, unique
     function renameFolder(){
         let nrname = prompt("Enter folder's name");
         if(nrname != null){
             nrname = nrname.trim();
         }
 
-        if (!nrname) {
+        if(!nrname){ // empty name validation
             alert("Empty name is not allowed.");
             return;
         }
 
         let spanRename = this;
         let divFolder = spanRename.parentNode;
-        let divName = divName.innerHTML;
+        let divName = divFolder.querySelector("[purpose=name]");
         let orname = divName.innerHTML;
         let ridTBU = parseInt(divFolder.getAttribute("rid"));
-        if(nrname == ornmae){
+        if(nrname == orname){
             alert("Please enter a new name.");
             return;
         }
 
         let alreadyExists = resources.some(r => r.rname == nrname && r.pid == cfid);
         if(alreadyExists == true){
-            alert(nrname + "alrady Exists.");
+            alert(nrname + " already exists.");
             return;
         }
 
+        // change html
         divName.innerHTML = nrname;
-
-        let resources = resources.find(r => r.rid == ridTBU);
-        resources.rname = nrname;
-
+        // change ram
+        let resource = resources.find(r => r.rid == ridTBU);
+        resource.rname = nrname;
+        // change storage
         saveToStorage();
     }
 
@@ -94,10 +100,49 @@
 
     function viewFolder(){
         console.log("In view");
+        let spanView = this;
+        let divFolder = spanView.parentNode;
+        let divName = divFolder.querySelector("[purpose='name']");
+
+        let fname = divName.innerHTML;
+        let fid = parseInt(divFolder.getAttribute("rid"));
+
+        let aPathTemplate = templates.content.querySelector("a[purpose='path']");
+        let aPath = document.importNode(aPathTemplate,true);
+
+        aPath.innerHTML = fname;
+        aPath.setAttribute("rid", fid);
+        aPath.addEventListener('click', viewFolderFromPath);
+        divbreadcrumb.appendChild(aPath);
+
+        cfid = fid;
+        divContainer.innerHTML = "";
+        for (let i = 0; i < resources.length; i++) {
+            if (resources[i].pid == cfid) {
+                addFolderHTML(resources[i].rname, resources[i].rid, resources[i].pid);
+            }
+        }
     }
 
     function viewTextFile(){
 
+    }
+
+    function viewFolderFromPath() {
+        let aPath = this;
+        let fid = parseInt(aPath.getAttribute('rid'));
+
+        while (aPath.nextSibling) {
+            aPath.parentNode.removeChild(aPath.nextSibling);
+        }
+
+        cfid = fid;
+        divContainer.innerHTML = "";
+        for (let i = 0; i < resources.length; i++) {
+            if (resources[i].pid == cfid) {
+                addFolderHTML(resources[i].rname, resources[i].rid, resources[i].pid);
+            }
+        }
     }
 
     function addFolderHTML(rname, rid, pid){
@@ -126,16 +171,18 @@
 
     function loadFromStorage(){
         let rjson = localStorage.getItem("data");
-        if(!!rjson){
-            resources = JSON.parse(rjson);
-            for(let i = 0; i < resources.length; i++){
-                if(resources[i].pid == cfid){
-                    addFolderHTML(resources[i].rname, resources[i].rid, resources[i].pid);
-                }
+        if(!rjson){
+            return;
+        }
+       
+        resources = JSON.parse(rjson);
+        for(let i = 0; i < resources.length; i++){
+            if(resources[i].pid == cfid){
+                addFolderHTML(resources[i].rname, resources[i].rid, resources[i].pid);
+            }
 
-                if(resources[i].rid > rid){
-                    rid = resources[i].rid;
-                }
+            if(resources[i].rid > rid){
+                rid = resources[i].rid;
             }
         }
     }

@@ -14,17 +14,16 @@
     // validation - unique, non-blank
     function addFolder(){
         let rname = prompt("Enter folder's name");
-        rname = rname.trim();
-
-        if(!rname){ // empty name validation
-            alert("Empty name is not allowed.");
+        if(!rname){
+            alert("Empty Folder's name");
             return;
         }
 
-        // uniqueness validation
-        let alreadyExists = resources.some(r => r.rname == rname && r.pid == cfid);
-        if(alreadyExists == true){
-            alert(rname + " is already in use. Try some other name");
+        rname = rname.trim();
+
+        let alradyExists = resources.some(r => r.rname = rname && r.pid == cfid);
+        if (alradyExists){
+            alert(rname + " is alresy in use. Try other name.");
             return;
         }
 
@@ -54,38 +53,7 @@
     }
 
     function renameFolder(){
-        let nrname = prompt("Enter folder's name");
-        if(nrname != null){
-            nrname = nrname.trim();
-        }
-
-        if (!nrname) {
-            alert("Empty name is not allowed.");
-            return;
-        }
-
-        let spanRename = this;
-        let divFolder = spanRename.parentNode;
-        let divName = divName.innerHTML;
-        let orname = divName.innerHTML;
-        let ridTBU = parseInt(divFolder.getAttribute("rid"));
-        if(nrname == ornmae){
-            alert("Please enter a new name.");
-            return;
-        }
-
-        let alreadyExists = resources.some(r => r.rname == nrname && r.pid == cfid);
-        if(alreadyExists == true){
-            alert(nrname + "alrady Exists.");
-            return;
-        }
-
-        divName.innerHTML = nrname;
-
-        let resources = resources.find(r => r.rid == ridTBU);
-        resources.rname = nrname;
-
-        saveToStorage();
+        console.log("In rename");
     }
 
     function renameTextFile(){
