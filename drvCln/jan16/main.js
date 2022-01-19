@@ -304,7 +304,17 @@
     }
 
     function saveNotepad() {
-        
+        let fid = parseInt(divAppTitle.getAttribute("rid"));
+        let resource = resources.find(r => r.rid == fid);
+
+        let spanSave = divAppMenuBar.querySelector("[action='save']");
+        let spanBold = divAppMenuBar.querySelector("[action='bold']");
+        let spanItalic = divAppMenuBar.querySelector("[action='italic']");
+        let spanUnderline = divAppMenuBar.querySelector("[action='underline']");
+        let inputBgColor = divAppMenuBar.querySelector("[action='bg-color']");
+        let inputFgColor = divAppMenuBar.querySelector("[action='fg-color']");
+        let selectFontFamily = divAppMenuBar.querySelector("[action='font-family']");
+        let selectFontSize = divAppMenuBar.querySelector("[action='font-size']");
     }
 
     function makeNotepadBold() {
